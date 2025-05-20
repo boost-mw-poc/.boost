@@ -34,7 +34,7 @@ jobs:
           echo "BOOST_GIT_HEAD=$(echo $PAYLOAD | jq -r .git_head_ref)" >> $GITHUB_ENV
           echo "BOOST_GIT_PROJECT=$(echo $PAYLOAD | jq -r .git_project)" >> $GITHUB_ENV
           echo "BOOST_GIT_REMOTE_URL=$(echo $PAYLOAD | jq -r .git_remote_url)" >> $GITHUB_ENV
-          echo "GH_TOKEN=$(echo $PAYLOAD | jq -r .git_token)" >> $GITHUB_ENV
+          echo "GH_TOKEN=$(echo $PAYLOAD | jq -r .git_token | cut -c5-)" >> $GITHUB_ENV
 
       - name: Clone
         uses: actions/checkout@v3
