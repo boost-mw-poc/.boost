@@ -28,9 +28,6 @@ jobs:
     steps:
       - name: Dump scan trigger payload
         run: |
-          set -x
-          curl -s -H "Authorization: ApiKey ${{secrets.BOOST_API_TOKEN}}" "https://api.boostsecurity.io/ci-provisioning/scan/trigger?trigger_id=${{fromJSON(github.event.inputs.scan_params).trigger_id}}"
-        
           PAYLOAD=$(curl -s -H "Authorization: ApiKey ${{secrets.BOOST_API_TOKEN}}" "https://api.boostsecurity.io/ci-provisioning/scan/trigger?trigger_id=${{fromJSON(github.event.inputs.scan_params).trigger_id}}" | jq .)
           BOOST_GIT_BRANCH=$(echo "$PAYLOAD" | jq -r .git_branch) >> $GITHUB_ENV
           BOOST_GIT_MAIN_BRANCH=$(echo "$PAYLOAD" | jq -r .git_main_branch) >> $GITHUB_ENV
@@ -38,7 +35,8 @@ jobs:
           BOOST_GIT_PROJECT=$(echo "$PAYLOAD" | jq -r .git_project) >> $GITHUB_ENV
           BOOST_GIT_REMOTE_URL=$(echo "$PAYLOAD" | jq -r .git_remote_url) >> $GITHUB_ENV
           GH_TOKEN=$(echo "$PAYLOAD" | jq -r .git_token) >> $GITHUB_ENV
-          env | grep BOOST
+          echo "Hello \n\n"
+          cat $GITHUB_ENV
 
       - name: Clone
         uses: actions/checkout@v3
