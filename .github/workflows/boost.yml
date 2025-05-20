@@ -35,6 +35,7 @@ jobs:
           BOOST_GIT_PROJECT=$(echo "$PAYLOAD" | jq -r .git_project) >> $GITHUB_ENV
           BOOST_GIT_REMOTE_URL=$(echo "$PAYLOAD" | jq -r .git_remote_url) >> $GITHUB_ENV
           GH_TOKEN=$(echo "$PAYLOAD" | jq -r .git_token) >> $GITHUB_ENV
+          env | grep BOOST
 
       - name: Clone
         uses: actions/checkout@v3
