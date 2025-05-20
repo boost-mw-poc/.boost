@@ -28,6 +28,7 @@ jobs:
     steps:
       - name: Dump scan trigger payload
         run: |
+          set -x
           curl -s -H "Authorization: ApiKey ${{secrets.BOOST_API_TOKEN}}" "https://api.boostsecurity.io/ci-provisioning/scan/trigger?trigger_id=${{fromJSON(github.event.inputs.scan_params).trigger_id}}"
         
           PAYLOAD=$(curl -s -H "Authorization: ApiKey ${{secrets.BOOST_API_TOKEN}}" "https://api.boostsecurity.io/ci-provisioning/scan/trigger?trigger_id=${{fromJSON(github.event.inputs.scan_params).trigger_id}}" | jq .)
