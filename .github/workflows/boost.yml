@@ -28,10 +28,20 @@ jobs:
     steps:
       - name: Dump scan trigger payload
         run: |
-          curl -s -H "Authorization: ApiKey ${{secrets.BOOST_API_TOKEN}}" "https://api.boostsecurity.io/ci-provisioning/scan/trigger?trigger_id=${{fromJSON(github.event.inputs.scan_params).trigger_id}}" | jq .
+          PAYLOAD=$(curl -s -H "Authorization: ApiKey ${{secrets.BOOST_API_TOKEN}}" "https://api.boostsecurity.io/ci-provisioning/scan/trigger?trigger_id=${{fromJSON(github.event.inputs.scan_params).trigger_id}}" | jq .)
+          BOOST_GIT_BRANCH=$(echo "$PAYLOAD" | jq -r .git_branch) >> $GITHUB_ENV
+          BOOST_GIT_MAIN_BRANCH=$(echo "$PAYLOAD" | jq -r .git_main_branch) >> $GITHUB_ENV
+          BOOST_GIT_HEAD=$(echo "$PAYLOAD" | jq -r .git_head_ref) >> $GITHUB_ENV
+          BOOST_GIT_PROJECT=$(echo "$PAYLOAD" | jq -r .git_project) >> $GITHUB_ENV
+          BOOST_GIT_REMOTE_URL=$(echo "$PAYLOAD" | jq -r .git_remote_url) >> $GITHUB_ENV
+          GH_TOKEN=$(echo "$PAYLOAD" | jq -r .git_token) >> $GITHUB_ENV
 
-      # - name: Clone
-      #   uses: actions/checkout@v3
+      - name: Clone
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.BOOST_GIT_PROJECT }}
+          ref: ${{ env.BOOST_GIT_BRANCH }}
+          token: ${{ env.GH_TOKEN }}
       
       # - name: malcontent
       #   uses: boostsecurityio/boostsec-scanner-github@v4
