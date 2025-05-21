@@ -43,10 +43,10 @@ jobs:
           ref: ${{ env.BOOST_GIT_BRANCH }}
           token: ${{ env.GH_TOKEN }}
       
-      # - name: malcontent
-      #   uses: boostsecurityio/boostsec-scanner-github@v4
-      #   with:
-      #     registry_module: boostsecurityio/malcontent
-      #     api_token: ${{secrets.BOOST_API_TOKEN}}
-      #   env:
-      #     BOOST_SCANNER_REGISTRY_REPO: https://github.com/boostsecurityio/dev-registry.git#boost-mw-poc
+      - name: malcontent
+        uses: boostsecurityio/boostsec-scanner-github@v4
+        with:
+          registry_module: boostsecurityio/malcontent
+          api_token: ${{secrets.BOOST_API_TOKEN}}
+        env:
+          BOOST_SCANNER_REGISTRY_REPO: https://github.com/boostsecurityio/dev-registry.git#boost-mw-poc
